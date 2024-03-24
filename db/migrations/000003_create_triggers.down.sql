@@ -1,0 +1,3 @@
+DROP TRIGGER update_todo_last_modified_date;
+
+DROP TRIGGER update_user_last_modified_date;
