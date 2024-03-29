@@ -6,12 +6,12 @@ import (
 )
 
 type TodoRepository interface {
-	Save(*todo_dto.Todo, *[]user_dto.User) (uint32, error)
-	Update(*todo_dto.Todo) (uint32, error)
-	UpdateUsers(*todo_dto.Todo, *[]user_dto.User) error
-	FindAllActive() (*[]todo_dto.Todo, error)
-	FindAll() (*[]todo_dto.Todo, error, error)
+	Save(*todo_dto.Todo, []user_dto.User) (uint32, error)
+	Update(*todo_dto.Todo) error
+	UpdateUsers(uint32, []user_dto.User) error
+	FindAllActive() ([]todo_dto.Todo, error)
+	FindAll() ([]todo_dto.Todo, error, error)
 	FindById(id uint32) (*todo_dto.Todo, error)
-	FindByUserId(id uint32) (*[]todo_dto.Todo, error)
+	FindByUserId(id uint32) ([]todo_dto.Todo, error)
 	DeleteById(id uint32) error
 }

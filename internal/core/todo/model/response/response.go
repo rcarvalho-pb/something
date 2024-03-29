@@ -1,7 +1,9 @@
 package todo_response
 
+import response_status "github.com/rcarvalho-pb/todo-app-go/internal/core/user/entity_status_response"
+
 type TodoResponse struct {
-	ID          uint32 `json:"id,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Description string `json:"description,omitempty"`
+	StatusCode response_status.StatusCode `json:"-"`
+	Status     response_status.StatusMsg  `json:"status"`
+	Content    any                        `json:"content"`
 }

@@ -54,22 +54,22 @@ func (u *userRepository) UpdatePassword(user *user_dto.User) error {
 	return nil
 }
 
-func (u *userRepository) FindAll() (*[]user_dto.User, error) {
+func (u *userRepository) FindAll() ([]user_dto.User, error) {
 	var users []user_dto.User
 	if err := u.Select(&users, "SELECT * FROM users"); err != nil {
 		return nil, err
 	}
 
-	return &users, nil
+	return users, nil
 }
 
-func (u *userRepository) FindAllActive() (*[]user_dto.User, error) {
+func (u *userRepository) FindAllActive() ([]user_dto.User, error) {
 	var users []user_dto.User
 	if err := u.Select(&users, "SELECT * FROM users WHERE active = TRUE"); err != nil {
 		return nil, err
 	}
 
-	return &users, nil
+	return users, nil
 }
 
 func (u *userRepository) FindById(id uint32) (*user_dto.User, error) {

@@ -5,9 +5,9 @@ import (
 )
 
 type TodoRequest struct {
-	ID          uint32                      `json:"id,omitempty"`
-	Name        string                      `json:"name,omitempty"`
-	Description string                      `json:"description,omitempty"`
-	Status      string                      `json:"status,omitempty"`
-	Users       *[]user_request.UserRequest `json:"users"`
+	ID          uint32                     `json:"id,omitempty"`
+	Name        string                     `json:"name,omitempty"`
+	Description string                     `json:"description,omitempty"`
+	Status      string                     `json:"status,omitempty"`
+	Users       []user_request.UserRequest `json:"users,omitempty"`
 }
