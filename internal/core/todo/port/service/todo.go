@@ -11,6 +11,7 @@ type TodoService interface {
 	UpdateTodoUsers(*todo_request.TodoRequest) *todo_response.TodoResponse
 	FindAllActiveTodos() *todo_response.TodoResponse
 	FindAllTodos() *todo_response.TodoResponse
-	FindTodoById(uint32) *todo_response.TodoResponse
-	DeleteTodoById(uint32) *todo_response.TodoResponse
+	FindByUserId(*todo_request.TodoRequest) *todo_response.TodoResponse
+	FindTodoById(*todo_request.TodoRequest) *todo_response.TodoResponse
+	DeleteTodoById(*todo_request.TodoRequest) *todo_response.TodoResponse
 }
