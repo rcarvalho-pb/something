@@ -21,10 +21,10 @@ func InitUserRoutes(db *sqlx.DB) []Route {
 	var serv user_service.UserService = user_iservice.NewUserService(rep)
 	userController = *user_controller.NewUserControler(serv)
 
-	return UserRoutes
+	return userRoutes
 }
 
-var UserRoutes = []Route{
+var userRoutes = []Route{
 	{
 		Uri:      fmt.Sprintf("/%s", USER_RESOURCE),
 		Method:   http.MethodPost,

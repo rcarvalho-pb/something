@@ -10,7 +10,7 @@ type TodoRepository interface {
 	Update(*todo_dto.Todo) error
 	UpdateUsers(uint32, []user_dto.User) error
 	FindAllActive() ([]todo_dto.Todo, error)
-	FindAll() ([]todo_dto.Todo, error, error)
+	FindAll() ([]todo_dto.Todo, error)
 	FindById(id uint32) (*todo_dto.Todo, error)
 	FindByUserId(id uint32) ([]todo_dto.Todo, error)
 	DeleteById(id uint32) error

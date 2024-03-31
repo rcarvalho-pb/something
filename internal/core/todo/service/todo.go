@@ -12,7 +12,7 @@ type todoService struct {
 	todo_irepository.TodoRepository
 }
 
-func NewTodoRepository(todoRepository todo_irepository.TodoRepository) *todoService {
+func NewTodoService(todoRepository todo_irepository.TodoRepository) *todoService {
 	return &todoService{
 		TodoRepository: todoRepository,
 	}
@@ -41,7 +41,18 @@ func (t *todoService) CreateTodo(todoRequest *todo_request.TodoRequest) *todo_re
 }
 
 func (t *todoService) UpdateTodo(TodoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
-	return nil
+	if err := t.TodoRepository.Update(TodoRequest.ToTodoDTO()); err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.InternalError,
+			Status:     response_status.InternalErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    nil,
+	}
 }
 
 func (t *todoService) UpdateTodoUsers(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
@@ -74,22 +85,81 @@ func (t *todoService) UpdateTodoUsers(todoRequest *todo_request.TodoRequest) *to
 	}
 }
 
-func (t *todoService) FindAllActiveTodos(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
-	return nil
+func (t *todoService) FindAllActiveTodos() *todo_response.TodoResponse {
+	todos, err := t.TodoRepository.FindAllActive()
+	if err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.NotFound,
+			Status:     response_status.InternalErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    todos,
+	}
 }
 
 func (t *todoService) FindAllTodos() *todo_response.TodoResponse {
-	return nil
+	todos, err := t.TodoRepository.FindAll()
+	if err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.NotFound,
+			Status:     response_status.InternalErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    todos,
+	}
 }
 
-func (t *todoService) FindByUserId(id uint32) *todo_response.TodoResponse {
-	return nil
+func (t *todoService) FindByUserId(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
+	todos, err := t.TodoRepository.FindByUserId(todoRequest.ID)
+	if err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.NotFound,
+			Status:     response_status.NotFoundErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    todos,
+	}
 }
 
-func (t *todoService) FindTodoById(id uint32) *todo_response.TodoResponse {
-	return nil
+func (t *todoService) FindTodoById(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
+	todo, err := t.TodoRepository.FindById(todoRequest.ID)
+	if err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.NotFound,
+			Status:     response_status.NotFoundErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    todo,
+	}
 }
 
-func (t *todoService) DeleteTodoById(id uint32) *todo_response.TodoResponse {
-	return nil
+func (t *todoService) DeleteTodoById(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
+	if err := t.TodoRepository.DeleteById(todoRequest.ID); err != nil {
+		return &todo_response.TodoResponse{
+			StatusCode: response_status.InternalError,
+			Status:     response_status.InternalErrMsg,
+			Content:    err,
+		}
+	}
+	return &todo_response.TodoResponse{
+		StatusCode: response_status.Ok,
+		Status:     response_status.SuccessMsg,
+		Content:    nil,
+	}
 }
