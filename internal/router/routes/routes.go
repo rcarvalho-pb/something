@@ -17,10 +17,10 @@ type Route struct {
 func ConfigRouter(router *mux.Router, db *sqlx.DB) {
 	var routes []Route
 
-	// todoRoutes := initTodoRoutes(db)
+	todoRoutes := InitTodoRoutes(db)
 	userRoutes := InitUserRoutes(db)
 
-	// routes = append(routes, todoRoutes...)
+	routes = append(routes, todoRoutes...)
 	routes = append(routes, userRoutes...)
 
 	for _, route := range routes {
