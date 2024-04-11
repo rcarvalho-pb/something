@@ -3,6 +3,7 @@ module github.com/rcarvalho-pb/todo-app-go
 go 1.22.0
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/mux v1.8.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/mattn/go-sqlite3 v1.14.22

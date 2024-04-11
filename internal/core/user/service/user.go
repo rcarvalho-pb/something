@@ -79,11 +79,11 @@ func (u *userService) UpdateUserPassword(userRequest *user_request.UserRequest) 
 		}
 	}
 
-	if !encoder.CheckPassword(userRequest.Password, user.Password) {
+	if err := encoder.CheckPassword(userRequest.Password, user.Password); err != nil {
 		return &user_response.UserResponse{
 			StatusCode: response_status.InternalError,
 			Status:     response_status.InternalErrMsg,
-			Content:    nil,
+			Content:    err,
 		}
 	}
 

@@ -1,8 +1,6 @@
 package todo_repository
 
 import (
-	"errors"
-
 	"github.com/jmoiron/sqlx"
 	todo_dto "github.com/rcarvalho-pb/todo-app-go/internal/core/todo/dto"
 	user_dto "github.com/rcarvalho-pb/todo-app-go/internal/core/user/dto"
@@ -40,7 +38,7 @@ func (t *todoRepository) Save(todo *todo_dto.Todo, users []user_dto.User) (uint3
 }
 
 func (t *todoRepository) Update(todo *todo_dto.Todo) error {
-	_, err := t.NamedExec("INSERT INTO todos (name, description) VALUES (:name, :description)", todo)
+	_, err := t.NamedExec("UPDATE todos SET name=:name, description=:description WHERE id = :id", todo)
 	if err != nil {
 		return err
 	}
@@ -48,21 +46,14 @@ func (t *todoRepository) Update(todo *todo_dto.Todo) error {
 }
 
 func (t *todoRepository) UpdateUsers(id uint32, users []user_dto.User) error {
-	if _, err := t.Exec("DELETE FROM todos WHERE todo_id=$1", id); err != nil {
-		return err
+	tx := t.MustBegin()
+	tx.MustExec("DELETE FROM todos_users WHERE todo_id = $1", id)
+	for _, user := range users {
+		tx.MustExec("INSERT INTO todos_users (todo_id, user_id) VALUES ($1, $2)", id, user.ID)
 	}
-	if len(users) > 0 {
-		tx := t.MustBegin()
-		for _, user := range users {
-			_, err := tx.Exec("INSERT INTO todos_users VALUES ($1, $2)", id, user.ID)
-			if err != nil {
-				return err
-			}
-		}
-		tx.Commit()
-		return nil
-	}
-	return errors.New("Invalid users")
+
+	err := tx.Commit()
+	return err
 }
 
 func (t *todoRepository) FindAllActive() ([]todo_dto.Todo, error) {

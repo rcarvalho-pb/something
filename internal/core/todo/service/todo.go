@@ -40,8 +40,8 @@ func (t *todoService) CreateTodo(todoRequest *todo_request.TodoRequest) *todo_re
 	}
 }
 
-func (t *todoService) UpdateTodo(TodoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
-	if err := t.TodoRepository.Update(TodoRequest.ToTodoDTO()); err != nil {
+func (t *todoService) UpdateTodo(todoRequest *todo_request.TodoRequest) *todo_response.TodoResponse {
+	if err := t.TodoRepository.Update(todoRequest.ToTodoDTO()); err != nil {
 		return &todo_response.TodoResponse{
 			StatusCode: response_status.InternalError,
 			Status:     response_status.InternalErrMsg,

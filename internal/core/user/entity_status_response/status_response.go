@@ -14,6 +14,7 @@ const (
 	InternalError       StatusCode = http.StatusInternalServerError
 	UnprocessableEntity StatusCode = http.StatusUnprocessableEntity
 	NotFound            StatusCode = http.StatusNotFound
+	Unauthorized        StatusCode = http.StatusUnauthorized
 )
 
 const (
@@ -22,4 +23,5 @@ const (
 	InvalidRequestErrMsg      StatusMsg = "invalid request"
 	UnprocessableEntityErrMsg StatusMsg = "Inválid JSON"
 	NotFoundErrMsg            StatusMsg = "Not Found"
+	UnauthorizedMsg           StatusMsg = "Unauthorized"
 )
