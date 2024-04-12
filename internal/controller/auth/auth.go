@@ -3,6 +3,7 @@ package auth_controller
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/jmoiron/sqlx"
@@ -22,6 +23,12 @@ type AuthController struct {
 	*sqlx.DB
 }
 
+func NewAuthController(db *sqlx.DB) *AuthController {
+	return &AuthController{
+		DB: db,
+	}
+}
+
 func (a *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	requestBody, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -34,6 +41,8 @@ func (a *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 		json_response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
+
+	log.Println(auth)
 
 	var user user_dto.User
 	if err = a.Get(&user, "SELECT * FROM users WHERE email=$1", auth.Username); err != nil {

@@ -84,7 +84,7 @@ func (t *todoRepository) FindById(id uint32) (*todo_dto.Todo, error) {
 
 func (t *todoRepository) FindByUserId(id uint32) ([]todo_dto.Todo, error) {
 	var todos []todo_dto.Todo
-	if err := t.Select(&todos, "SELECT * FROM todos t JOIN ON todos_users tu WHERE tu.user_id = $1", id); err != nil {
+	if err := t.Select(&todos, "SELECT DISTINCT t.* FROM todos t join todos_users tu on t.id = tu.todo_id where tu.user_id = $1", id); err != nil {
 		return nil, err
 	}
 	return todos, nil

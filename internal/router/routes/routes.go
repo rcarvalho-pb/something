@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
+	"github.com/rcarvalho-pb/todo-app-go/internal/middleware"
 )
 
 type Route struct {
@@ -19,15 +20,18 @@ func ConfigRouter(router *mux.Router, db *sqlx.DB) {
 
 	todoRoutes := InitTodoRoutes(db)
 	userRoutes := InitUserRoutes(db)
+	authRoutes := InitAuthRoutes(db)
 
 	routes = append(routes, todoRoutes...)
 	routes = append(routes, userRoutes...)
+	routes = append(routes, authRoutes...)
 
 	for _, route := range routes {
+
 		if route.Auth {
-			// implement
+			router.HandleFunc(route.Uri, middleware.Logger(middleware.Authenticate(route.Function))).Methods(route.Method)
 		} else {
-			router.HandleFunc(route.Uri, route.Function).Methods(route.Method)
+			router.HandleFunc(route.Uri, middleware.Logger(route.Function)).Methods(route.Method)
 		}
 	}
 
